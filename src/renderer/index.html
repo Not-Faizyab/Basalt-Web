@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' app:; img-src 'self' app: data: blob:; media-src 'self' app: data: blob:; style-src 'self' app: 'unsafe-inline'; font-src 'self' app: data:; script-src 'self' app:; connect-src 'self' app:; object-src 'self' app:; frame-src 'none'; base-uri 'none'; form-action 'none'" />
+    <title>obsidian</title>
+    <link rel="stylesheet" href="assets/app.css" />
+    <style>
+      @font-face {
+        font-family: "Inter Variable";
+        src: url("assets/fonts/inter-var.woff2") format("woff2-variations");
+        font-weight: 100 900;
+        font-style: normal;
+        font-display: swap;
+      }
+      :root { --font-inter: "Inter Variable"; }
+    </style>
+  </head>
+  <body class="antialiased">
+    <div id="root"></div>
+    <script src="assets/app.js"></script>
+  </body>
+</html>

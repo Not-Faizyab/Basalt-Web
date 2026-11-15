@@ -1,0 +1,16 @@
+/*
+ * Desktop renderer stylesheet.
+ *
+ * Compiles the web app's globals.css (Tailwind v4 + the full obsidian design
+ * token system) into a single static file. The web page and the desktop app
+ * therefore share the exact same visual system — same tokens, same utilities,
+ * same callout/markdown styling.
+ *
+ * Explicit @source directives (rather than automatic detection, which is
+ * confused by this repo's nested git roots) point at the web UI sources that
+ * contain Tailwind class names.
+ */
+@source "../obsidian/**/*.{ts,tsx}";
+@source "../lib/obsidian/**/*.ts";
+@source "./*.{ts,tsx}";
+@import "../app/globals.css";

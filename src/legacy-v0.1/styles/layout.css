@@ -1,0 +1,248 @@
+/* obsidian — layout: app grid, ribbon, sidebars, workspace panes, tabs, statusbar, vault switcher. */
+
+#app { height: 100%; }
+#app-grid {
+  display: grid;
+  height: 100%;
+  grid-template-columns: auto auto 1fr auto;
+  grid-template-rows: 1fr auto;
+  grid-template-areas:
+    "ribbon left main right"
+    "status status status status";
+}
+#app.no-left  { grid-template-columns: auto 1fr auto; grid-template-areas: "ribbon main right" "status status status"; }
+#app.no-right { grid-template-columns: auto auto 1fr; grid-template-areas: "ribbon left main" "status status status"; }
+#app.no-left.no-right { grid-template-columns: auto 1fr; grid-template-areas: "ribbon main" "status status"; }
+
+/* ------------------------------------------------------------------ ribbon */
+#ribbon {
+  grid-area: ribbon;
+  background: var(--bg-base);
+  border-right: 1px solid var(--border-soft);
+  display: flex; flex-direction: column; align-items: center;
+  padding: 8px 0;
+  gap: 2px;
+  z-index: 5;
+}
+.ribbon-btn {
+  width: 34px; height: 34px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 8px;
+  color: var(--text-muted);
+  cursor: pointer;
+  position: relative;
+}
+.ribbon-btn:hover { background: var(--bg-hover); color: var(--text); }
+.ribbon-btn.active { color: var(--accent-text); background: var(--accent-soft); }
+.ribbon-btn .icon { width: 18px; height: 18px; }
+.ribbon-spacer { flex: 1; }
+
+/* ---------------------------------------------------------------- sidebars */
+#sidebar-left { grid-area: left; position: relative; display: flex; flex-direction: column; background: var(--bg-0); }
+#sidebar-right { grid-area: right; position: relative; display: flex; flex-direction: column; background: var(--bg-0); }
+#app.no-left #sidebar-left { display: none; }
+#app.no-right #sidebar-right { display: none; }
+
+.sidebar-resize {
+  position: absolute; top: 0; bottom: 0;
+  width: 5px;
+  cursor: col-resize;
+  z-index: 10;
+}
+#sidebar-left-resize { right: -2px; }
+#sidebar-right-resize { left: -2px; }
+.sidebar-resize:hover, .sidebar-resize.dragging { background: var(--accent-soft); }
+
+.sidebar-tabs {
+  display: flex; align-items: center;
+  padding: 0 6px;
+  height: 34px;
+  border-bottom: 1px solid var(--border-soft);
+  gap: 2px;
+}
+.sidebar-tab {
+  flex: 1;
+  display: flex; align-items: center; justify-content: center;
+  height: 26px;
+  border-radius: 6px;
+  color: var(--text-faint);
+  cursor: pointer;
+}
+.sidebar-tab:hover { color: var(--text); background: var(--bg-hover); }
+.sidebar-tab.active { color: var(--accent-text); background: var(--accent-soft); }
+.sidebar-body { flex: 1; overflow: auto; display: flex; flex-direction: column; }
+
+/* --------------------------------------------------------------- workspace */
+#workspace { grid-area: main; display: flex; flex-direction: column; background: var(--bg-base); position: relative; overflow: hidden; }
+.pane-split { display: flex; min-width: 0; min-height: 0; flex: 1; overflow: hidden; position: relative; }
+.pane-split.pane-row { flex-direction: row; }
+.pane-split.pane-col { flex-direction: column; }
+.pane-leaf {
+  display: flex; flex-direction: column;
+  min-width: 180px; min-height: 120px;
+  overflow: hidden;
+  position: relative;
+  background: var(--bg-base);
+  border: 1px solid var(--border-soft);
+  border-radius: 2px;
+}
+.pane-leaf.active { border-color: var(--accent); }
+.pane-divider {
+  flex: none;
+  background: transparent;
+  z-index: 6;
+  position: relative;
+}
+.pane-divider.pane-row { width: 4px; cursor: col-resize; margin: 0 -2px; }
+.pane-divider.pane-col { height: 4px; cursor: row-resize; margin: -2px 0; }
+.pane-divider:hover::after, .pane-divider.dragging::after {
+  content: ''; position: absolute; inset: 0;
+  background: var(--accent-soft);
+}
+.pane-divider.pane-row::after { left: 1px; right: 1px; }
+.pane-divider.pane-col::after { top: 1px; bottom: 1px; }
+
+/* tab bar */
+.tabbar {
+  display: flex; align-items: center;
+  background: var(--bg-0);
+  border-bottom: 1px solid var(--border-soft);
+  height: 36px;
+  padding: 0 6px;
+  gap: 3px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.tabbar::-webkit-scrollbar { display: none; }
+.tab {
+  display: flex; align-items: center; gap: 7px;
+  height: 28px;
+  padding: 0 8px 0 10px;
+  border-radius: 7px;
+  font-size: 0.9em;
+  color: var(--text-muted);
+  cursor: pointer;
+  white-space: nowrap;
+  max-width: 220px;
+  position: relative;
+}
+.tab:hover { background: var(--bg-hover); }
+.tab.active { background: var(--bg-2); color: var(--text); }
+.tab .tab-title { overflow: hidden; text-overflow: ellipsis; }
+.tab .icon { width: 13px; height: 13px; opacity: 0.75; }
+.tab .tab-close {
+  display: flex; align-items: center; justify-content: center;
+  width: 17px; height: 17px;
+  border-radius: 4px;
+  color: var(--text-faint);
+}
+.tab .tab-close:hover { background: var(--bg-active); color: var(--text); }
+.tab .tab-close .icon { width: 11px; height: 11px; opacity: 1; }
+.tab .dirty-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--accent);
+  position: absolute; right: 9px; top: 10px;
+}
+
+.pane-content { flex: 1; display: flex; overflow: hidden; position: relative; }
+
+/* empty workspace */
+.workspace-empty {
+  flex: 1;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 10px;
+  color: var(--text-faint);
+}
+.workspace-empty .big { font-size: 1.25em; color: var(--text-muted); }
+.workspace-empty .hint { display: flex; gap: 16px; margin-top: 14px; }
+
+/* --------------------------------------------------------------- statusbar */
+#statusbar {
+  grid-area: status;
+  height: 26px;
+  display: flex; align-items: center;
+  background: var(--bg-0);
+  border-top: 1px solid var(--border-soft);
+  padding: 0 10px;
+  gap: 12px;
+  font-size: 0.82em;
+  color: var(--text-muted);
+  user-select: none;
+}
+#statusbar .status-item {
+  display: flex; align-items: center; gap: 5px;
+  padding: 2px 7px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+#statusbar .status-item:hover { background: var(--bg-hover); }
+#statusbar .status-item .icon { width: 13px; height: 13px; }
+#vault-chip {
+  position: fixed;
+  left: 8px; bottom: 31px;
+  z-index: 20;
+  display: flex; align-items: center; gap: 7px;
+  padding: 5px 10px;
+  border-radius: 8px;
+  color: var(--text-faint);
+  font-size: 0.85em;
+  cursor: pointer;
+  background: color-mix(in srgb, var(--bg-0) 82%, transparent);
+  border: 1px solid var(--border-soft);
+}
+#vault-chip:hover { color: var(--text); background: var(--bg-1); }
+
+/* ---------------------------------------------------------- vault switcher */
+#vault-switcher {
+  position: fixed; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  background:
+    radial-gradient(1200px 600px at 20% -10%, color-mix(in srgb, var(--accent) 14%, transparent), transparent 60%),
+    radial-gradient(900px 500px at 90% 110%, color-mix(in srgb, var(--accent) 8%, transparent), transparent 60%),
+    var(--bg-base);
+  z-index: 100;
+}
+.switcher-card { width: 560px; max-width: 92vw; }
+.switcher-card .brand {
+  display: flex; align-items: center; gap: 14px;
+  margin-bottom: 26px;
+}
+.switcher-card .brand img { width: 56px; height: 56px; }
+.switcher-card .brand h1 { margin: 0; font-size: 1.7em; letter-spacing: 0.5px; }
+.switcher-card .brand p { margin: 2px 0 0; color: var(--text-muted); font-size: 0.92em; }
+.switcher-actions { display: flex; gap: 10px; margin-bottom: 22px; }
+.switcher-actions button {
+  flex: 1;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 12px;
+  font-size: 0.95em;
+}
+.switcher-list-title {
+  font-size: 0.8em; text-transform: uppercase; letter-spacing: 0.08em;
+  color: var(--text-faint);
+  margin: 0 0 6px 4px;
+}
+.vault-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 11px 12px;
+  border-radius: 9px;
+  border: 1px solid var(--border-soft);
+  background: var(--bg-0);
+  margin-bottom: 7px;
+  cursor: pointer;
+}
+.vault-item:hover { border-color: var(--accent); }
+.vault-item .icon-lg { color: var(--accent-text); }
+.vault-item .v-name { font-weight: 600; }
+.vault-item .v-path { font-size: 0.8em; color: var(--text-faint); font-family: var(--mono); user-select: text; }
+.vault-item .vault-remove {
+  margin-left: auto; color: var(--text-faint);
+  width: 26px; height: 26px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 6px;
+}
+.vault-item .vault-remove:hover { color: var(--danger); background: var(--bg-hover); }
+.switcher-foot { margin-top: 22px; color: var(--text-faint); font-size: 0.82em; display: flex; align-items: center; gap: 7px; }
+
+.sb-panel { flex: 1; display: flex; flex-direction: column; overflow: hidden; min-height: 0; }

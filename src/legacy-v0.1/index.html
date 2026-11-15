@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' app:; img-src 'self' app: data: blob:; style-src 'self' 'unsafe-inline'; font-src 'self' app: data:; script-src 'self' app:; connect-src 'self' app:; object-src 'none'; frame-src 'none'; base-uri 'none'; form-action 'none'" />
+  <title>obsidian</title>
+  <link rel="stylesheet" href="../node_modules/katex/dist/katex.min.css" />
+  <link rel="stylesheet" href="styles/base.css" />
+  <link rel="stylesheet" href="styles/layout.css" />
+  <link rel="stylesheet" href="styles/panels.css" />
+  <link rel="stylesheet" href="styles/editor.css" />
+</head>
+<body data-theme="dark">
+  <!-- Vault switcher (shown when no vault is open) -->
+  <div id="vault-switcher"></div>
+
+  <!-- Main application shell -->
+  <div id="app" class="hidden">
+    <div id="app-grid">
+      <nav id="ribbon"></nav>
+      <aside id="sidebar-left">
+        <div id="sidebar-left-tabs"></div>
+        <div id="sidebar-left-body"></div>
+        <div class="sidebar-resize" id="sidebar-left-resize"></div>
+      </aside>
+      <main id="workspace"></main>
+      <aside id="sidebar-right">
+        <div class="sidebar-resize" id="sidebar-right-resize"></div>
+        <div id="sidebar-right-tabs"></div>
+        <div id="sidebar-right-body"></div>
+      </aside>
+      <footer id="statusbar"></footer>
+      <div id="vault-chip"></div>
+    </div>
+  </div>
+
+  <div id="overlays"></div>
+  <div id="notices"></div>
+  <div id="tooltip" class="hidden"></div>
+
+  <script type="module" src="../dist/bundle.js"></script>
+</body>
+</html>
